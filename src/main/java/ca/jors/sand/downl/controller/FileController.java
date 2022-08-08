@@ -23,8 +23,6 @@ public class FileController {
 
     @GetMapping(value = "/image")
     public ResponseEntity<ByteArrayResource> getImage() throws IOException {
-        // InputStream in = getClass().getResourceAsStream("./files/icon_stop.gif");
-
         ByteArrayResource resource = new ByteArrayResource(Files
                 .readAllBytes(Path.of("/home/djors/work/projects/down/sand/files/icon_stop.gif")));
 
@@ -33,12 +31,18 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         ContentDisposition.inline().filename("whatever.gif").build().toString())
                 .body(resource);
+    }
 
 
-        /*
-         * byte[] data = this.getClass().getClassLoader()
-         * .getResourceAsStream("/home/djors/work/projects/down/sand/files/icon_stop.gif")
-         * .readAllBytes(); return data;
-         */ // return IOUtils.toByteArray(in);
+    @GetMapping(value = "/pdf")
+    public ResponseEntity<ByteArrayResource> getPdf() throws IOException {
+        ByteArrayResource resource = new ByteArrayResource(Files
+                .readAllBytes(Path.of("/home/djors/work/projects/down/sand/files/sample.pdf")));
+
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/pdf"))
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline().filename("sample.pdf").build().toString())
+                .body(resource);
     }
 }
